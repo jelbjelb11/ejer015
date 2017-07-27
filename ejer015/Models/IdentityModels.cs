@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using System.Data.Entity;
 
 namespace ejer015.Models
 {
@@ -24,7 +25,9 @@ namespace ejer015.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
-        
+
+        public DbSet<Entrada> Entradas { get; set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
