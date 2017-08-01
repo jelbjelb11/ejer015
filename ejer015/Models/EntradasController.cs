@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ejer015;
+using ejer015.Servicios;
+using ejer015.Repository;
 
 namespace ejer015.Models
 {
@@ -44,7 +46,7 @@ namespace ejer015.Models
                 return BadRequest(ModelState);
             }
 
-            if (id != entrada.id)
+            if (id != entrada.Id)
             {
                 return BadRequest();
             }
@@ -79,10 +81,14 @@ namespace ejer015.Models
                 return BadRequest(ModelState);
             }
 
-            db.Entradas.Add(entrada);
-            db.SaveChanges();
+            //db.Entradas.Add(entrada);
+            //db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = entrada.id }, entrada);
+            IEntradasRepository entradasRepository = new EntradasRepository();
+            IEntradasService entradasService = new EntradasService(entradasRepository);
+            entrada = entradasService.Create(entrada);
+
+            return CreatedAtRoute("DefaultApi", new { id = entrada.Id }, entrada);
         }
 
         // DELETE: api/Entradas/5
@@ -112,7 +118,7 @@ namespace ejer015.Models
 
         private bool EntradaExists(long id)
         {
-            return db.Entradas.Count(e => e.id == id) > 0;
+            return db.Entradas.Count(e => e.Id == id) > 0;
         }
     }
 }
